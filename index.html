@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+<head>
+<title>客户端</title>
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+<style>
+    *{font-size:14px;font-family:Consolas}
+    .entered{display: none}
+    .message{width:600px;height:300px;overflow: auto;border:1px solid #e2e2e2;margin-top:10px;padding:10px;font-size:12px;color:#999}
+</style>
+<script src="../js/jquery-1.11.1.js"></script>
+<script>
+$(function(){
+    var ws;
+    ws = $(".btn-enter").click(function(){
+        pannel.clear();
+        if( $(".name").val() == '' ) {
+            pannel.add('请先填写用户名!');
+            return false;
+        }
+        pannel.add('尝试连接服务器……');
+        ws = new WebSocket("ws://127.0.0.6:8080/");
+        if(ws.readyState == 0 ){
+            pannel.add('连接失败！');
+        }
+        ws.onopen = function(e){
+            pannel.add('连接服务器成功！');
+            ws.send( "name-setting-" + $(".name").val() );
+            $(".start").hide();
+            $(".entered").show();
+        }
+        ws.onmessage = function(e){
+            pannel.add(e.data);
+        }
+        $('.btn-send').click(function(){
+            ws.send($(".input").val());
+            $(".input").val('');
+        });
+    });
+});
+var pannel = {
+    'add': function(msg){
+        $(".message").append(msg+'<br>');
+    },
+    'clear': function(){
+        $(".message").html("");
+    }
+}
+</script>
+<body>
+<div class="start">
+    用户名：<input type="text" class="name span2"> <input type="button" class="btn btn-enter" value="连接服务器"/>
+</div>
+<div class="entered">
+    <input type="text" class="span3 input"/>
+    <input type="button" class="btn btn-send btn-success" value="发送消息"/>
+</div>
+
+<div class="message"></div>
+</body>
+</head>
+</html>
