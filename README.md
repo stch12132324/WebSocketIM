@@ -1,4 +1,4 @@
-<h3>一个基于WebSocket的简易IM</h3>
+<h4>一个基于WebSocket的简易IM</h4>
 
 使用方法
 $sock = new webSocket();
