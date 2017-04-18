@@ -1,6 +1,7 @@
 <h4>一个基于WebSocket的简易IM</h4>
 
 使用方法
+
 $sock = new webSocket();
 
 $sock->run();
